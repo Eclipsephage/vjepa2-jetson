@@ -22,12 +22,7 @@ run_pretrain.py
 traces/
 third_party/*
 
-# Model files and directories
-models/
-models/*.pt
-models/*.pth
-models/*.ckpt
-models/*.safetensors
+# Model files and directories - now handled by models/.gitignore
 
 evals/simu_env_planning/local/
 evals/simu_env_planning/docker2/

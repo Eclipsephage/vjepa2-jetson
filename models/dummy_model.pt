@@ -1,0 +1,12 @@
+# This is a dummy model file for V-JEPA 2
+# Replace this with actual model weights when available
+# 
+# Expected files:
+# - vitl.pt (V-JEPA 2 backbone weights)
+# - vitl_fp16.pt (FP16 converted backbone weights) 
+# - ssv2-vitl-16x2x3.pt (Something-Something V2 classifier weights)
+#
+# Download instructions:
+# 1. Visit the official V-JEPA 2 repository
+# 2. Follow the model download instructions
+# 3. Replace this dummy file with actual model weights 

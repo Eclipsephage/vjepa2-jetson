@@ -1,0 +1,8 @@
+# Ignore actual model files (large files)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# But keep the dummy file
+!dummy_model.pt 
