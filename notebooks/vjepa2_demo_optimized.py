@@ -261,9 +261,13 @@ def _get_cached_models() -> Tuple["torch.nn.Module", "torch.nn.Module", float, f
             0.0,
         )
 
+    # Start timing backbone loading
+    t_backbone_start = time.time()
+
     # Paths - use absolute paths from project root
-    pt_model_path = os.path.join(PROJECT_ROOT, "models", "vitl_fp16.pt")
-    pt_model_orig_path = os.path.join(PROJECT_ROOT, "models", "vitl.pt")
+    pt_model_path = os.path.join(PROJECT_ROOT, "models", "vitl_fp16.pt")  # ← This is the converted FP16 file
+    #pt_model_path = os.path.join(PROJECT_ROOT, "models", "vjepa2-vitl-fpc16-256-ssv2.pt")
+    pt_model_orig_path = os.path.join(PROJECT_ROOT, "models", "vitl.pt")  # ← Original FP32 file
     classifier_model_path = os.path.join(PROJECT_ROOT, "models", "ssv2-vitl-16x2x3.pt")
 
     # One-time FP32→FP16 conversion
@@ -284,8 +288,11 @@ def _get_cached_models() -> Tuple["torch.nn.Module", "torch.nn.Module", float, f
     )
 
     # Load FP16 weights
-    load_pretrained_vjepa_pt_weights(model_pt, pt_model_path)
+    load_pretrained_vjepa_pt_weights(model_pt, pt_model_path)  # ← Loading the converted FP16 file
     model_pt = model_pt.cuda().eval()
+
+    # End timing backbone loading
+    backbone_time = time.time() - t_backbone_start
 
     print("🔗 Loading classifier head (cold)…")
     t_cls_start = time.time()
@@ -322,7 +329,7 @@ def _get_cached_models() -> Tuple["torch.nn.Module", "torch.nn.Module", float, f
     classifier_time = time.time() - t_cls_start
 
     _cached_models = {"model": model_pt, "classifier": classifier}
-    return model_pt, classifier, 0.0, classifier_time
+    return model_pt, classifier, backbone_time, classifier_time
 
 
 def _get_hf_model() -> Tuple[Optional[Any], Optional[Any], float]:
